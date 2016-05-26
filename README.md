@@ -1,5 +1,7 @@
 # Auth
 
+[![Build Status](https://travis-ci.org/hharnisc/auth.svg?branch=master)](https://travis-ci.org/hharnisc/auth)
+
 A token management service. It is responsible for creating, refreshing and destroying authentication tokens. Expirable/refreshable tokens are generated using JTW and can be passed onto the client.
 
 ## Table Of Contents
