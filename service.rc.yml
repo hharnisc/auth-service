@@ -18,5 +18,6 @@ spec:
       containers:
         - name: auth
           image: hharnisc/auth
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
