@@ -15,9 +15,17 @@ spec:
         app: auth
         version: 0.0.1
     spec:
+      volumes:
+      - name: secrets # SEE: http://kubernetes.io/docs/user-guide/secrets/
+        secret:
+          secretName: secrets
       containers:
         - name: auth
           image: hharnisc/auth
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: secrets
+            mountPath: /etc/secrets
+            readOnly: true
           ports:
             - containerPort: 9090
