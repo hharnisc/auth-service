@@ -34,7 +34,7 @@
     "test": "npm run lint && npm run test:jest && npm run test:integration",
     "test:jest": "./node_modules/jest-cli/bin/jest.js",
     "test:watch": "./node_modules/nodemon/bin/nodemon.js -w src -w test -e js -x 'npm run lint && jest'",
-    "test:integration": "pushd integration-test && bash test.sh && popd"
+    "test:integration": "cd integration-test && bash test.sh && cd .."
   },
   "repository": {
     "type": "git",
