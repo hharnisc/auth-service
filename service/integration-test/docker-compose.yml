@@ -2,7 +2,20 @@ integration-tester:
   build: .
   links:
     - auth
+    - rethinkdb
+  environment:
+    - JWT_SECRET=secret
 auth:
   build: ../..
+  environment:
+    - RETHINKDB_SERVICE_HOST=rethinkdb
+    - RETHINKDB_SERVICE_PORT=28015
+    - JWT_SECRET=secret
+  links:
+    - rethinkdb
   ports:
-    - "8080:8080"
+    - "9090:9090"
+rethinkdb:
+  image: rethinkdb
+  ports:
+    - "28015:28015"

@@ -20,4 +20,4 @@ spec:
           image: hharnisc/auth
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 9090
