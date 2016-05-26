@@ -4,4 +4,4 @@ services:
 language: node_js
 node_js:
   stable
-script: cd service && npm test
+script: cd service && npm install && npm test
