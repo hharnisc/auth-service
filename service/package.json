@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
+    "jsonwebtoken": "^7.0.0",
     "minimist": "^1.1.3",
     "rethinkdb": "^2.3.1",
     "rethinkdb-init": "^0.2.1",
@@ -32,7 +33,7 @@
   "scripts": {
     "start": "node .",
     "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib",
-    "lint": "./node_modules/eslint/bin/eslint.js src/* test/* integration-test/test/*",
+    "lint": "./node_modules/eslint/bin/eslint.js src/* test/* __mocks__/* integration-test/test/*",
     "test": "npm run lint && npm run test:jest && npm run test:integration",
     "test:jest": "./node_modules/jest-cli/bin/jest.js",
     "test:watch": "./node_modules/nodemon/bin/nodemon.js -w src -w test -e js -x 'npm run lint && jest'",
