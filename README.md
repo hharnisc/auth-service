@@ -118,14 +118,43 @@ No parameters
 
 {}
 
-### GET /v1/thetime
+### POST /v1/create
 
-Get a unix timestamp
+Create a new auth token for a user
 
 #### request
 
-No parameters
+- **userId** - *string* - an existing user id
 
 #### response
 
-- **time** - *unix timestamp* - current time
+- **accessToken** - *string* - expirable token used to authenticate requests
+- **refreshToken** - *string* - persistent token used to generate an `accessToken`
+- **expireTime** - *unix timestamp* - the time the access token expires
+
+### POST /v1/refresh
+
+Refresh an `accessToken` with the `refreshToken`
+
+#### request
+
+- **userId** - *string* - an existing user id
+- **refreshToken** - *string* - persistent token used to generate an `accessToken`
+
+#### response
+
+- **accessToken** - *string* - expirable token used to authenticate requests
+- **expireTime** - *unix timestamp* - the time the access token expires
+
+### POST /v1/reject
+
+Delete a `refreshToken` so it cannot refresh an `accessToken`
+
+#### request
+
+- **userId** - *string* - an existing user id
+- **refreshToken** - *string* - persistent token used to generate an `accessToken`
+
+#### response
+
+Empty
