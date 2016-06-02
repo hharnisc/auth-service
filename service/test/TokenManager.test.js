@@ -46,9 +46,18 @@ describe('TokenManager', () => {
   it('does generate a jsonwebtoken', () => {
     const userId = 1;
     const secret = 'SECRET';
+    const roles = ['admin'];
+    const tokenManager = new TokenManager({ secret });
+    expect(tokenManager[GENERATE_JWT]({ userId, roles })).toBe('aSignedToken');
+    expect(jwt.sign).toBeCalledWith({ userId, roles }, secret, { expiresIn: 5 * 60 * 60 });
+  });
+
+  it('does generate a jsonwebtoken with default empty roles', () => {
+    const userId = 1;
+    const secret = 'SECRET';
     const tokenManager = new TokenManager({ secret });
     expect(tokenManager[GENERATE_JWT]({ userId })).toBe('aSignedToken');
-    expect(jwt.sign).toBeCalledWith({ userId }, secret, { expiresIn: 5 * 60 * 60 });
+    expect(jwt.sign).toBeCalledWith({ userId, roles: [] }, secret, { expiresIn: 5 * 60 * 60 });
   });
 
   it('does have a method to generate a refreshToken', () => {
@@ -79,8 +88,11 @@ describe('TokenManager', () => {
     const refreshToken = 'aRefreshToken';
     const createdAt = 1300;
     const expiresIn = 100;
+    const user = {
+      roles: ['admin'],
+    };
     const dbDriver = {
-      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve('user'))),
+      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(user))),
       storeToken: jest.fn().mockImplementation(() => new Promise((resolve) => resolve())),
     };
     const secret = 'SECRET';
@@ -92,7 +104,7 @@ describe('TokenManager', () => {
       createdAt,
     })
       .then((result) => {
-        expect(tokenManager[GENERATE_JWT]).toBeCalledWith({ userId });
+        expect(tokenManager[GENERATE_JWT]).toBeCalledWith({ userId, roles: user.roles });
         expect(tokenManager[GENERATE_REFRESH_TOKEN]).toBeCalledWith({ userId });
         expect(dbDriver.getUser).toBeCalledWith({ userId });
         expect(dbDriver.storeToken).toBeCalledWith({
@@ -251,8 +263,12 @@ describe('TokenManager', () => {
     const refreshToken = 'aRefreshToken';
     const createdAt = 1300;
     const expiresIn = 100;
+    const user = {
+      roles: ['admin'],
+    };
     const dbDriver = {
       tokenExists: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(true))),
+      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(user))),
     };
     const secret = 'SECRET';
     const tokenManager = new TokenManager({ secret, dbDriver, tokenLifetime: expiresIn });
@@ -264,7 +280,7 @@ describe('TokenManager', () => {
     })
       .then((result) => {
         expect(dbDriver.tokenExists).toBeCalledWith({ userId, refreshToken });
-        expect(tokenManager[GENERATE_JWT]).toBeCalledWith({ userId });
+        expect(tokenManager[GENERATE_JWT]).toBeCalledWith({ userId, roles: user.roles });
         expect(result).toEqual({
           accessToken,
           expireTime: createdAt + expiresIn,

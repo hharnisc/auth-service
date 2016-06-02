@@ -46,7 +46,7 @@ const disconnectDB = () => {
 
 const populateDB = () => (
   rethinkdb.table('users')
-    .insert({ name: 'A person' })
+    .insert({ name: 'A person', roles: ['admin'] })
     .run(connection)
   .then((result) => {
     userId = result.generated_keys[0];
@@ -123,6 +123,7 @@ test('POST /create', (t) => {
             reject(err);
           } else {
             t.equal(decoded.userId, userId, 'token has expected payload');
+            t.deepEqual(decoded.roles, ['admin'], 'token has expected roles in payload');
             resolve(response.body.refreshToken);
           }
         });

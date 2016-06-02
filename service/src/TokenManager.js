@@ -14,7 +14,8 @@ export default class TokenManager {
 
   [GENERATE_JWT](options = {}) {
     const userId = options.userId;
-    return jwt.sign({ userId }, this.secret, { expiresIn: this.tokenLifetime });
+    const roles = options.roles || [];
+    return jwt.sign({ userId, roles }, this.secret, { expiresIn: this.tokenLifetime });
   }
 
   [GENERATE_REFRESH_TOKEN](options = {}) {
@@ -31,7 +32,7 @@ export default class TokenManager {
           if (user === null) {
             reject(`UserId ${userId} does not exist`);
           } else {
-            const accessToken = this[GENERATE_JWT]({ userId });
+            const accessToken = this[GENERATE_JWT]({ userId, roles: user.roles });
             const refreshToken = this[GENERATE_REFRESH_TOKEN]({ userId });
             this.dbDriver.storeToken({
               userId,
@@ -78,10 +79,17 @@ export default class TokenManager {
           if (!exists) {
             reject(`Token does not exist for token: ${refreshToken} and userId: ${userId}`);
           } else {
-            resolve({
-              accessToken: this[GENERATE_JWT]({ userId }),
-              expireTime: createdAt + this.tokenLifetime,
-            });
+            this.dbDriver.getUser({ userId })
+              .then((user) => {
+                if (user === null) {
+                  reject(`UserId ${userId} does not exist`);
+                } else {
+                  resolve({
+                    accessToken: this[GENERATE_JWT]({ userId, roles: user.roles }),
+                    expireTime: createdAt + this.tokenLifetime,
+                  });
+                }
+              });
           }
         });
     });
