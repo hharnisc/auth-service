@@ -25,10 +25,10 @@ export default class TokenManager {
   generateToken(options = {}) {
     const userId = options.userId;
     const createdAt = options.createdAt;
-    return this.dbDriver.userExists({ userId })
-      .then((exists) =>
+    return this.dbDriver.getUser({ userId })
+      .then((user) =>
         new Promise((resolve, reject) => {
-          if (!exists) {
+          if (user === null) {
             reject(`UserId ${userId} does not exist`);
           } else {
             const accessToken = this[GENERATE_JWT]({ userId });

@@ -80,7 +80,7 @@ describe('TokenManager', () => {
     const createdAt = 1300;
     const expiresIn = 100;
     const dbDriver = {
-      userExists: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(true))),
+      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve('user'))),
       storeToken: jest.fn().mockImplementation(() => new Promise((resolve) => resolve())),
     };
     const secret = 'SECRET';
@@ -94,7 +94,7 @@ describe('TokenManager', () => {
       .then((result) => {
         expect(tokenManager[GENERATE_JWT]).toBeCalledWith({ userId });
         expect(tokenManager[GENERATE_REFRESH_TOKEN]).toBeCalledWith({ userId });
-        expect(dbDriver.userExists).toBeCalledWith({ userId });
+        expect(dbDriver.getUser).toBeCalledWith({ userId });
         expect(dbDriver.storeToken).toBeCalledWith({
           refreshToken,
           userId,
@@ -113,7 +113,7 @@ describe('TokenManager', () => {
     const userId = 2;
     const createdAt = 1300;
     const dbDriver = {
-      userExists: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(false))),
+      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(null))),
     };
     const secret = 'SECRET';
     const tokenManager = new TokenManager({ secret, dbDriver });
@@ -132,7 +132,7 @@ describe('TokenManager', () => {
     const createdAt = 1300;
     const storeTokenError = 'something broke';
     const dbDriver = {
-      userExists: jest.fn().mockImplementation(() => new Promise((resolve) => resolve(true))),
+      getUser: jest.fn().mockImplementation(() => new Promise((resolve) => resolve('user'))),
       storeToken: jest.fn().mockImplementation(() =>
         new Promise((resolve, reject) => reject(storeTokenError))),
     };
@@ -153,7 +153,7 @@ describe('TokenManager', () => {
     const userId = 1;
     const createdAt = 1300;
     const dbDriver = {
-      userExists: jest.fn().mockImplementation(() =>
+      getUser: jest.fn().mockImplementation(() =>
         new Promise((resolve, reject) => reject(errorMessage))),
     };
     const secret = 'SECRET';

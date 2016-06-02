@@ -145,14 +145,14 @@ describe('DatabaseDriver', () => {
 
   it('does have a method to check if users exist', () => {
     const databaseDriver = new DatabaseDriver();
-    expect(databaseDriver.userExists).toBeDefined();
+    expect(databaseDriver.getUser).toBeDefined();
   });
 
   it('does find existing user', (done) => {
     const userId = 1;
     const databaseDriver = new DatabaseDriver();
-    databaseDriver.userExists({ userId }).then((result) => {
-      expect(result).toBe(true);
+    databaseDriver.getUser({ userId }).then((result) => {
+      expect(result).toBe('data');
       expect(rethinkdb.table).toBeCalledWith('users');
       expect(rethinkdb.get).toBeCalledWith(userId);
       expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
@@ -163,8 +163,8 @@ describe('DatabaseDriver', () => {
   it('does not find a user who doesn\'t exist', (done) => {
     const userId = 2;
     const databaseDriver = new DatabaseDriver();
-    databaseDriver.userExists({ userId }).then((result) => {
-      expect(result).toBe(false);
+    databaseDriver.getUser({ userId }).then((result) => {
+      expect(result).toBe(null);
       expect(rethinkdb.table).toBeCalledWith('users');
       expect(rethinkdb.get).toBeCalledWith(userId);
       expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);

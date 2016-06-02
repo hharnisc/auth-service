@@ -40,12 +40,11 @@ export default class DatabaseDriver {
       .run(this.connection);
   }
 
-  userExists(options = {}) {
+  getUser(options = {}) {
     const userId = options.userId;
     return rethinkdb.table(this.userTable)
       .get(userId)
-      .run(this.connection)
-      .then((result) => result !== null);
+      .run(this.connection);
   }
 
   tokenExists(options = {}) {
