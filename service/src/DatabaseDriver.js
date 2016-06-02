@@ -22,17 +22,9 @@ export default class DatabaseDriver {
   [INSERT](options = {}) {
     const table = options.table;
     const data = options.data;
-    return new Promise((resolve, reject) => {
-      rethinkdb.table(table)
-        .insert(data)
-        .run(this.connection, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-    });
+    return rethinkdb.table(table)
+      .insert(data)
+      .run(this.connection);
   }
 
   storeToken(data) {
@@ -42,49 +34,27 @@ export default class DatabaseDriver {
   deleteToken(options = {}) {
     const userId = options.userId;
     const refreshToken = options.refreshToken;
-    return new Promise((resolve, reject) => {
-      rethinkdb.table(this.sessionTable)
-        .filter({ userId, refreshToken })
-        .delete()
-        .run(this.connection, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-    });
+    return rethinkdb.table(this.sessionTable)
+      .filter({ userId, refreshToken })
+      .delete()
+      .run(this.connection);
   }
 
   userExists(options = {}) {
     const userId = options.userId;
-    return new Promise((resolve, reject) => {
-      rethinkdb.table(this.userTable)
-        .get(userId)
-        .run(this.connection, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result !== null);
-          }
-        });
-    });
+    return rethinkdb.table(this.userTable)
+      .get(userId)
+      .run(this.connection)
+      .then((result) => result !== null);
   }
 
   tokenExists(options = {}) {
     const userId = options.userId;
     const refreshToken = options.refreshToken;
-    return new Promise((resolve, reject) => {
-      rethinkdb.table(this.sessionTable)
-        .filter({ userId, refreshToken })
-        .count()
-        .run(this.connection, (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result > 0);
-          }
-        });
-    });
+    return rethinkdb.table(this.sessionTable)
+      .filter({ userId, refreshToken })
+      .count()
+      .run(this.connection)
+      .then((result) => result > 0);
   }
 }

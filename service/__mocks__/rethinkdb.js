@@ -14,21 +14,31 @@ rethinkdb.init = jest.fn().mockImplementation((config) =>
     }
   })
 );
-rethinkdb.run = jest.fn().mockImplementation((conn, cb) => {
-  cb(undefined, 'result');
-});
-rethinkdb.getRun = jest.fn().mockImplementation((conn, cb) => {
-  cb(undefined, 'data');
-});
-rethinkdb.getRunNotFound = jest.fn().mockImplementation((conn, cb) => {
-  cb(undefined, null);
-});
-rethinkdb.countRun = jest.fn().mockImplementation((conn, cb) => {
-  cb(undefined, 1);
-});
-rethinkdb.countRunNotFound = jest.fn().mockImplementation((conn, cb) => {
-  cb(undefined, 0);
-});
+rethinkdb.run = jest.fn().mockImplementation(() => (
+  new Promise((resolve) => {
+    resolve('result');
+  })
+));
+rethinkdb.getRun = jest.fn().mockImplementation(() => (
+  new Promise((resolve) => {
+    resolve('data');
+  })
+));
+rethinkdb.getRunNotFound = jest.fn().mockImplementation(() => (
+  new Promise((resolve) => {
+    resolve(null);
+  })
+));
+rethinkdb.countRun = jest.fn().mockImplementation(() => (
+  new Promise((resolve) => {
+    resolve(1);
+  })
+));
+rethinkdb.countRunNotFound = jest.fn().mockImplementation(() => (
+  new Promise((resolve) => {
+    resolve(0);
+  })
+));
 rethinkdb.count = jest.fn().mockImplementation(() => ({ run: rethinkdb.countRun }));
 rethinkdb.notFoundCount = jest.fn().mockImplementation(() => ({ run: rethinkdb.countRunNotFound }));
 rethinkdb.delete = jest.fn().mockImplementation(() => ({ run: rethinkdb.run }));

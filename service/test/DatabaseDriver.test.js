@@ -77,7 +77,7 @@ describe('DatabaseDriver', () => {
       expect(result).toBe('result');
       expect(rethinkdb.table).toBeCalledWith(table);
       expect(rethinkdb.insert).toBeCalledWith(data);
-      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -108,7 +108,7 @@ describe('DatabaseDriver', () => {
       expect(result).toBe('result');
       expect(rethinkdb.table).toBeCalledWith('sessions');
       expect(rethinkdb.insert).toBeCalledWith(data);
-      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -127,7 +127,7 @@ describe('DatabaseDriver', () => {
       expect(rethinkdb.table).toBeCalledWith('sessions');
       expect(rethinkdb.filter).toBeCalledWith({ userId, refreshToken });
       expect(rethinkdb.delete).toBeCalled();
-      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -155,7 +155,7 @@ describe('DatabaseDriver', () => {
       expect(result).toBe(true);
       expect(rethinkdb.table).toBeCalledWith('users');
       expect(rethinkdb.get).toBeCalledWith(userId);
-      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -167,7 +167,7 @@ describe('DatabaseDriver', () => {
       expect(result).toBe(false);
       expect(rethinkdb.table).toBeCalledWith('users');
       expect(rethinkdb.get).toBeCalledWith(userId);
-      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.run).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -186,7 +186,7 @@ describe('DatabaseDriver', () => {
       expect(rethinkdb.table).toBeCalledWith('sessions');
       expect(rethinkdb.filter).toBeCalledWith({ userId, refreshToken });
       expect(rethinkdb.count).toBeCalled();
-      expect(rethinkdb.countRun).toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+      expect(rethinkdb.countRun).toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
@@ -201,7 +201,7 @@ describe('DatabaseDriver', () => {
       expect(rethinkdb.filter).toBeCalledWith({ userId, refreshToken });
       expect(rethinkdb.count).toBeCalled();
       expect(rethinkdb.countRunNotFound)
-        .toBeCalledWith(databaseDriver.connection, jasmine.any(Function));
+        .toBeCalledWith(databaseDriver.connection);
       done();
     });
   });
