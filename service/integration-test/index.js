@@ -15,7 +15,7 @@ const before = test;
 const after = test;
 
 const host = process.env.HOST || 'auth';
-const port = 9090;
+const port = 8080;
 let userId;
 let connection;
 const refreshToken = '1234';

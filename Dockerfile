@@ -11,5 +11,5 @@ COPY service/src/ /service/src/
 
 RUN npm run build
 
-EXPOSE 9090
+EXPOSE 8080
 CMD [ "npm", "start" ]

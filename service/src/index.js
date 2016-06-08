@@ -10,7 +10,7 @@ import { accessLogger, errorLogger, logger } from './logging';
 
 const argv = minimist(process.argv.slice(2), {
   default: {
-    port: 9090,
+    port: 8080,
     apiVersion: 'v1',
     dbHost: process.env.RETHINKDB_SERVICE_HOST || 'localhost',
     dbPort: process.env.RETHINKDB_SERVICE_PORT || 28015,

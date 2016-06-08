@@ -9,7 +9,7 @@ spec:
   ports:
     - name: auth
       port: 80 # this assumes you're exposing this service to the outside world
-      targetPort: 9090
+      targetPort: 8080
       protocol: TCP
   selector:
     role: backend

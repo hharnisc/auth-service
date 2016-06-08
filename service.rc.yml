@@ -24,4 +24,4 @@ spec:
             name: JWT_SECRET
             value: SHARED_SECRET # change me!
           ports:
-            - containerPort: 9090
+            - containerPort: 8080
