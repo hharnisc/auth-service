@@ -22,7 +22,7 @@ export default class Router {
           });
         })
         .then((token) => res.status(200).send({ ...token }))
-        .catch((error) => res.status(400).send({ error }));
+        .catch((error) => res.status(400).send({ error: error.message }));
     });
     this.router.post('/refresh', (req, res) => {
       this[CALC_MISSING_REQ_PARAMS](req, ['userId', 'refreshToken'])
@@ -35,7 +35,7 @@ export default class Router {
           });
         })
         .then((token) => res.status(200).send({ ...token }))
-        .catch((error) => res.status(400).send({ error }));
+        .catch((error) => res.status(400).send({ error: error.message }));
     });
     this.router.post('/reject', (req, res) => {
       this[CALC_MISSING_REQ_PARAMS](req, ['userId', 'refreshToken'])
@@ -46,7 +46,7 @@ export default class Router {
           })
         )
         .then(() => res.status(200).send({}))
-        .catch((error) => res.status(400).send({ error }));
+        .catch((error) => res.status(400).send({ error: error.message }));
     });
   }
 
@@ -59,7 +59,7 @@ export default class Router {
         return true;
       });
       if (missingParams.length) {
-        reject(`Missing Param(s): ${missingParams.join(', ')}`);
+        reject(Error(`Missing Param(s): ${missingParams.join(', ')}`));
       } else {
         resolve();
       }

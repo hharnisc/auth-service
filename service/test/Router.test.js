@@ -69,7 +69,7 @@ describe('Router', () => {
     const error = 'some error';
     const tokenManager = {
       generateToken: jest.fn().mockImplementation(() =>
-        new Promise((resolve, reject) => reject(error))),
+        new Promise((resolve, reject) => reject(Error(error)))),
     };
     const createdAt = 1300;
     Date.now = jest.fn().mockReturnValue(createdAt);
@@ -135,7 +135,7 @@ describe('Router', () => {
     Date.now = jest.fn().mockReturnValue(createdAt);
     const tokenManager = {
       refreshToken: jest.fn().mockImplementation(() =>
-        new Promise((resolve, reject) => reject(error))),
+        new Promise((resolve, reject) => reject(Error(error)))),
     };
     const router = new Router({ tokenManager });
     const app = express();
@@ -191,7 +191,7 @@ describe('Router', () => {
     const error = 'some /reject error';
     const tokenManager = {
       deleteToken: jest.fn().mockImplementation(() =>
-        new Promise((resolve, reject) => reject(error))),
+        new Promise((resolve, reject) => reject(Error(error)))),
     };
     const router = new Router({ tokenManager });
     const app = express();
@@ -219,7 +219,7 @@ describe('Router', () => {
 
   it('does calculate missing request params', (done) => {
     const params = ['userId'];
-    const error = `Missing Param(s): ${params.join(',')}`;
+    const error = Error(`Missing Param(s): ${params.join(',')}`);
     const router = new Router();
     const req = {
       body: {},
@@ -234,7 +234,7 @@ describe('Router', () => {
   it('does calculate some missing request params', (done) => {
     const userId = 1;
     const params = ['userId', 'another thing'];
-    const error = `Missing Param(s): ${params.slice(1, 2).join(',')}`;
+    const error = Error(`Missing Param(s): ${params.slice(1, 2).join(',')}`);
     const router = new Router();
     const req = {
       body: {
