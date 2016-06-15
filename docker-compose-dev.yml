@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  auth:
+    build: .
+    command: npm run dev -- --port 8080
+    environment:
+      - LOGSTASH_SERVICE_HOST=logstash
+      - LOGSTASH_SERVICE_PORT=5000
+      - RETHINKDB_SERVICE_HOST=rethinkdb
+      - RETHINKDB_SERVICE_PORT=28015
+      - NODE_ENV=production
+      - JWT_SECRET=secret # change me in production
+    links:
+      - logstash
+      - rethinkdb
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./service/src:/service/src
+  elasticsearch:
+    image: hharnisc/elasticsearch:v1
+    expose:
+      - "9200"
+  logstash:
+    image: hharnisc/logstash:v2
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    expose:
+      - "5000"
+    links:
+      - elasticsearch
+  kibana:
+    image: hharnisc/kibana:v1
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
+  rethinkdb:
+    image: rethinkdb
+    expose:
+      - "28015"
+    ports:
+      - "8081:8080"

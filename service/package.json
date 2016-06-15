@@ -33,6 +33,7 @@
   "scripts": {
     "start": "node .",
     "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib",
+    "dev": "./node_modules/nodemon/bin/nodemon.js -w src -e js -x 'npm run build && npm start'",
     "lint": "./node_modules/eslint/bin/eslint.js src/* test/* __mocks__/* integration-test/test/*",
     "test": "npm run lint && npm run test:jest && npm run test:integration",
     "test:jest": "./node_modules/jest-cli/bin/jest.js",
