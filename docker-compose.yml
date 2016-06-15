@@ -3,7 +3,7 @@ version: '2'
 services:
   auth:
     build: .
-    command: npm start -- --port 8080
+    command: npm start
     environment:
       - LOGSTASH_SERVICE_HOST=logstash
       - LOGSTASH_SERVICE_PORT=5000
