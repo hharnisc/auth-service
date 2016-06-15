@@ -33,3 +33,6 @@ else
     docker-compose -p localdeploy up
   fi
 fi
+
+docker-compose -p localdeploy kill
+docker-compose -p localdeploy rm -f --all
