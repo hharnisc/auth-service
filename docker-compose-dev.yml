@@ -9,8 +9,7 @@ services:
       - LOGSTASH_SERVICE_PORT=5000
       - RETHINKDB_SERVICE_HOST=rethinkdb
       - RETHINKDB_SERVICE_PORT=28015
-      - NODE_ENV=production
-      - JWT_SECRET=secret # change me in production
+      - JWT_SECRET=secret
     links:
       - logstash
       - rethinkdb
