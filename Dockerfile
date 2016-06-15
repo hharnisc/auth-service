@@ -10,6 +10,3 @@ RUN npm install
 COPY service/src/ /service/src/
 
 RUN npm run build
-
-EXPOSE 8080
-CMD [ "npm", "start" ]
