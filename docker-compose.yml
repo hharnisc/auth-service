@@ -7,8 +7,6 @@ services:
     environment:
       - LOGSTASH_SERVICE_HOST=logstash
       - LOGSTASH_SERVICE_PORT=5000
-      - RETHINKDB_SERVICE_HOST=rethinkdb
-      - RETHINKDB_SERVICE_PORT=28015
       - NODE_ENV=production
       - JWT_SECRET=secret
     links:

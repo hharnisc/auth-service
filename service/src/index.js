@@ -2,6 +2,7 @@ import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 import minimist from 'minimist';
+import retryPromise from 'retry-promise';
 import DatabaseDriver from './DatabaseDriver';
 import Router from './Router';
 import healthRouter from './healthRouter';
@@ -12,8 +13,8 @@ const argv = minimist(process.argv.slice(2), {
   default: {
     port: 8080,
     apiVersion: 'v1',
-    dbHost: process.env.RETHINKDB_SERVICE_HOST || 'localhost',
-    dbPort: process.env.RETHINKDB_SERVICE_PORT || 28015,
+    dbHost: 'rethinkdb',
+    dbPort: 28015,
     // explodes if neither are set
     secret: process.env.JWT_SECRET || fs.readFileSync('/etc/secrets/jwt-secret'),
   },
@@ -32,7 +33,13 @@ const dbOptions = {
   userTable: 'users',
 };
 const dbDriver = new DatabaseDriver(dbOptions);
-dbDriver.init()
+const initDb = (attempt) => {
+  if (attempt > 1) {
+    logger.warn('Attempting to re-connect to database');
+  }
+  return dbDriver.init();
+};
+retryPromise({ max: 5, backoff: 10000 }, initDb)
   .then(() => {
     logger.info('Connected to database');
     const tokenOptions = {

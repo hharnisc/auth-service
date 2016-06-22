@@ -12,8 +12,6 @@ services:
     build: ../..
     command: npm start
     environment:
-      - RETHINKDB_SERVICE_HOST=rethinkdb
-      - RETHINKDB_SERVICE_PORT=28015
       - JWT_SECRET=secret
     links:
       - rethinkdb

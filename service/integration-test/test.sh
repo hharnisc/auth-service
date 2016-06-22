@@ -3,7 +3,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 cleanup () {
   docker-compose -p ci kill
-  docker-compose -p ci rm -f --all
+  docker-compose -p ci rm -f
 }
 trap 'cleanup ; printf "${RED}Tests Failed For Unexpected Reasons${NC}\n"' HUP INT QUIT PIPE TERM
 docker-compose -p ci build && docker-compose -p ci up -d

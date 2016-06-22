@@ -88,7 +88,7 @@ before('before', (t) => {
       }
     });
   };
-  return retryPromise({ max: 5, backoff: 1000 }, healthCheck)
+  return retryPromise({ max: 5, backoff: 10000 }, healthCheck)
     .then(() => connectDB())
     .then(() => {
       t.pass('Connect To SUT and Database');
